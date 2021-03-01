@@ -73,4 +73,8 @@ public class StandardAccount {
         return this.firstName + " " + this.lastName;
     }
 
+    public float getOverdraft() {
+        return this.overdraft;
+    }
+
 }

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="radley:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/radley_jar</output-path>
+    <root id="archive" name="radley.jar">
+      <element id="module-output" name="radley" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/info/picocli/picocli/4.6.1/picocli-4.6.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
