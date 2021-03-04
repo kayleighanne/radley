@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationTest {
@@ -36,13 +38,22 @@ class ApplicationTest {
     @Test
     void listAccounts() {
         int numberOfAccounts = 10;
-        Application application = new Application();
+        File tempFile;
 
-        for (int i = 0; i < numberOfAccounts; i++) {
-            int accountNumber = application.createAccount("First" + i, "Last" + i, 100, false);
+        try {
+            tempFile = File.createTempFile("radley", "");
+            tempFile.deleteOnExit();
+
+            Application application = new Application(tempFile.getAbsolutePath());
+
+            for (int i = 0; i < numberOfAccounts; i++) {
+                int accountNumber = application.createAccount("First" + i, "Last" + i, 100, false);
+            }
+
+            assertEquals(numberOfAccounts, application.listAccounts());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        assertEquals(numberOfAccounts, application.listAccounts());
     }
 
     @Test

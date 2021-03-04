@@ -8,5 +8,7 @@ public enum ErrorCode {
     ErrorInsuffcientFunds,
     ErrorDepositLimit,
     ErrorWithdrawalLimit,
-
+    ErrorWriteFile,
+    ErrorFlushFile,
+    ErrorReadFile
 }

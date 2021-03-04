@@ -5,6 +5,16 @@ public class LimitedAccount extends StandardAccount {
         super(firstName, lastName, balance);
     }
 
+    public LimitedAccount(String firstName, String lastName, float balance, int accountNumber) throws Exception {
+        super(firstName, lastName, balance, accountNumber);
+    }
+
+
+    @Override
+    public boolean isLimitedAccount() {
+        return true;
+    }
+
     @Override
     public ErrorCode depositFunds(float value) {
         ErrorCode retval;

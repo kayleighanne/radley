@@ -41,7 +41,9 @@ class CreateAccount implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         System.out.printf("FirstName: %s, LastName: %s, Balance: %f, Limited: %s\n", firstname, surname, balance, limited);
-        new Application().createAccount(firstname, surname, balance, limited);
+        Application app = new Application();
+        app.createAccount(firstname, surname, balance, limited);
+        app.close();
         return null;
     }
 }
@@ -53,7 +55,9 @@ class DeleteAccount implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         System.out.printf("Account: %d", account);
-        new Application().deleteAccount(account);
+        Application app = new Application();
+        app.deleteAccount(account);
+        app.close();
         return null;
     }
 }
@@ -78,7 +82,9 @@ class DepositFunds implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         System.out.printf("Funds deposited: %f", value);
-        ErrorCode retval =  new Application().depositFunds(account, value);
+        Application app = new Application();
+        ErrorCode retval =  app.depositFunds(account, value);
+        app.close();
         return null;
     }
 }
@@ -91,7 +97,9 @@ class WithdrawFunds implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         System.out.printf("Funds withdrawn: %f", value);
-        ErrorCode retval = new Application().withdrawFunds(account, value);
+        Application app = new Application();
+        ErrorCode retval = app.withdrawFunds(account, value);
+        app.close();
         return null;
     }
 }
