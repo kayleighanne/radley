@@ -1,4 +1,4 @@
-# radley
+# radley bank
 
 # Description
 Task set was to create an application to store and interact with bank accounts and be able to 
@@ -24,49 +24,76 @@ Requirements for Limited Account:
 
 # Usage
 
-Start the application from the command line:
+The application is packaged as a JAR and to simplify execution an alias can be added to the environment:
 
-radley
+```
+alias rb="java -jar out/artifacts/radley_jar/radley.jar"
+```
 
-Create an account
-rb create
+This allows the application to be executed from a shell
 
-  The application should prompt the user for the required data and explain what which is.
-  
-  rb create -b 200 -f Example -s Name
+```
+ % rb
+Usage: rb [COMMAND]
+Commands:
+  create    Create a new account.
+  delete    Delete Account
+  list      List Accounts
+  deposit   Deposit Funds
+  withdraw  Withdraw Funds
+  report    Account Balance Report
+```
 
-
-Delete an account
-rb delete
-
-  The application should prompt the user for the required data and explain what which is.
-  
-  rb delete -a 12345
-
-
-List accounts
-rb list
-
-
-Deposit funds
-rb deposit
- 
-  The application should prompt the user for the required data and explain what which is.
-  
-  rb deposit -a 12345 -v 100.00
+## Create an account
+```
+% rb create -f firstname -s surname -b 1000
+First Name: firstname, Last Name: surname, Balance: 1000.000000, Limited: false
+New standard account created: 42731
+```
 
 
- Withdraw funds
- rb withdraw
- 
-  The application should prompt the user for the required data and explain what which is.
-  
-  rb withdraw -a 12345 -v 100.00
+## Delete an account
+```
+ % rb delete -a 42731
+Account: 42731 
+Account 42731 deleted.
 
+```
 
-Report balance of an account
-rb report
+## List accounts
+```
+% rb list
+List: 
+Accounts: 
+Account Name: Sean McDonald Account Number: 46949 Limited: false Balance: 34624.0
 
-  The application should prompt the user for the required data and explain what which is.
-  
-  rb report -a 12345
+Account Name: Stephanie Murray Account Number: 44759 Limited: true Balance: 39694.45
+
+Account Name: Ross Byrne Account Number: 42157 Limited: false Balance: -60.0
+
+Account Name: Emily Carson Account Number: 46955 Limited: true Balance: 29583.56
+
+Account Name: firstname surname Account Number: 51652 Limited: false Balance: 1000.0
+```
+
+## Deposit funds
+
+```
+ % rb deposit  -a 51652 -v 200
+Funds deposited: 200.00
+Account 51652 deposit 200.00 succeeded
+
+```
+
+## Withdraw funds
+ ```
+ % rb withdraw  -a 51652 -v 100 
+Funds withdrawn: 100.0
+```
+
+## Report balance of an account
+````
+% rb report  -a 51652 
+Account Number: 51652
+Current balance: 1100.000000 Overdraft Limit: 100.00
+````
