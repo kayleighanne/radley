@@ -35,30 +35,35 @@ rb create
   
   rb create -b 200 -f Example -s Name
 
+
 Delete an account
 rb delete
 
   The application should prompt the user for the required data and explain what which is.
   
   rb delete -a 12345
-  
+
+
 List accounts
 rb list
- 
+
+
 Deposit funds
 rb deposit
  
   The application should prompt the user for the required data and explain what which is.
   
   rb deposit -a 12345 -v 100.00
-  
+
+
  Withdraw funds
  rb withdraw
  
   The application should prompt the user for the required data and explain what which is.
   
   rb withdraw -a 12345 -v 100.00
-  
+
+
 Report balance of an account
 rb report
 
