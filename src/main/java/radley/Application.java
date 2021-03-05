@@ -1,14 +1,15 @@
 package radley;
+// import packages
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+// create application class
 public class Application {
     String filename;
+    // create ArrayList to store accounts in
     List<AccountInterface> accountList = new ArrayList<>();
 
     public Application() {
+        // store data in temp file
         this.filename = "/tmp/rb-storage.log";
         this.accountList = new PersistenceCsv(this.filename).readAccounts();
     }
@@ -19,6 +20,7 @@ public class Application {
     }
 
     public int createAccount(String firstname, String lastName, float balance, boolean limitedAccount) {
+        // initialise accountNumber
         int accountNumber = 0;
 
         try {
@@ -27,7 +29,7 @@ public class Application {
                 this.accountList.add(account);
                 accountNumber = account.getAccountNumber();
 
-                System.out.printf("New limited account created: %d", accountNumber);
+                System.out.printf("New limited account created: %d\n", accountNumber);
             } else {
                 StandardAccount account = new StandardAccount(firstname, lastName, balance);
                 this.accountList.add(account);
@@ -69,7 +71,7 @@ public class Application {
         while (accountIterator.hasNext()) {
             AccountInterface account = accountIterator.next();
             System.out.println("Account Name: " + account.getFullName() + " Account Number: " + account.getAccountNumber()
-                    + "Limited: %s " + Boolean.toString(account.isLimitedAccount()) + "Balance: " + account.getBalance() + "\n");
+                    + " Limited: " + Boolean.toString(account.isLimitedAccount()) + " Balance: " + account.getBalance() + "\n");
             countAccounts++;
         }
 
@@ -77,6 +79,7 @@ public class Application {
     }
 
     public ErrorCode depositFunds(int accountNumber, float value){
+        // define return value
         ErrorCode retval = ErrorCode.ErrorAccountNotFound;
 
         // Search the account list
@@ -85,12 +88,11 @@ public class Application {
             AccountInterface account = accountIterator.next();
             if (accountNumber == account.getAccountNumber()) {
                 // Found the account
-
                 retval = account.depositFunds(value);
                 if(retval == ErrorCode.Success) {
-                    System.out.printf("Account %d deposit %f succeeded\n", accountNumber, value);
+                    System.out.printf("\nAccount %d deposit %.2f succeeded\n", accountNumber, value);
                 } else {
-                    System.out.printf("Account %d deposit %f failed\n", accountNumber, value);
+                    System.out.printf("\nAccount %d deposit %.2f failed\n", accountNumber, value);
                 }
                 return retval;
             }
@@ -101,7 +103,7 @@ public class Application {
         return retval;
     }
 
-    public ErrorCode withdrawFunds(float accountNumber, float value) {
+    public ErrorCode withdrawFunds(int accountNumber, float value) {
 
         ErrorCode retval = ErrorCode.ErrorAccountNotFound;
 
@@ -111,17 +113,10 @@ public class Application {
             AccountInterface account = accountIterator.next();
             if (accountNumber == account.getAccountNumber()) {
                 // Found the account
-                if(account.withdrawFunds(value) == ErrorCode.Success) {
-                    System.out.printf("Account %d withdrawal %f succeeded\n", accountNumber, value);
-                } else {
-                    System.out.printf("Account %d withdrawal %f failed\n", accountNumber, value);
-                }
-                return retval;
+                retval = account.withdrawFunds(value);
             }
         }
 
-        // Account not found
-        System.out.printf("Account %d not found.\n", accountNumber);
         return retval;
     }
 
@@ -130,6 +125,7 @@ public class Application {
         Iterator<AccountInterface> accountIterator = this.accountList.iterator();
         while (accountIterator.hasNext()) {
             AccountInterface account = accountIterator.next();
+            // getBalance for requested account
             if (accountNumber == account.getAccountNumber()) {
                 return account.getBalance();
             }
@@ -137,7 +133,23 @@ public class Application {
 
         // Account not found
         System.out.printf("Account %d not found.\n", accountNumber);
-        throw new Exception("Account " + accountNumber + "not found");
+        throw new Exception(" Account " + accountNumber + " not found");
+    }
+
+    public float getOverdraft( int accountNumber) throws Exception {
+        // Search the account list
+        Iterator<AccountInterface> accountIterator = this.accountList.iterator();
+        while (accountIterator.hasNext()) {
+            AccountInterface account = accountIterator.next();
+            // getBalance for requested account
+            if (accountNumber == account.getAccountNumber()) {
+                return account.getOverdraft();
+            }
+        }
+
+        // Account not found
+        System.out.printf("Account %d not found.\n", accountNumber);
+        throw new Exception("Account " + accountNumber + " not found");
     }
 
     public ErrorCode close() {

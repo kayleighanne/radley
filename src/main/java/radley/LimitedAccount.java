@@ -1,5 +1,6 @@
 package radley;
 
+// create subclass Limited Account
 public class LimitedAccount extends StandardAccount {
     public LimitedAccount(String firstName, String lastName, float balance) throws Exception {
         super(firstName, lastName, balance);
@@ -15,6 +16,7 @@ public class LimitedAccount extends StandardAccount {
         return true;
     }
 
+    // if account is limited set deposit limit of 50
     @Override
     public ErrorCode depositFunds(float value) {
         ErrorCode retval;
@@ -31,6 +33,7 @@ public class LimitedAccount extends StandardAccount {
     }
 
 
+    // if account is limited set withdrawal limit to 100
     @Override
     public ErrorCode withdrawFunds(float value) {
         ErrorCode retval;

@@ -1,11 +1,11 @@
 package radley;
 
+// import packages
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class PersistenceCsv implements PersistenceInterface {
+    // define variables
     private String filename;
     private static final String COMMA_DELIMITER = ",";
     private static final String NEW_LINE_SEPARATOR = "\n";
@@ -24,6 +24,7 @@ public class PersistenceCsv implements PersistenceInterface {
 
     @Override
     public ErrorCode writeAccounts(List<AccountInterface> accountList) {
+        // create new fileWriter
         FileWriter fileWriter = null;
         ErrorCode retval = ErrorCode.Success;
 
@@ -61,9 +62,11 @@ public class PersistenceCsv implements PersistenceInterface {
         return retval;
     }
 
+
     public List<AccountInterface> readAccounts() {
         ErrorCode retval = ErrorCode.Success;
 
+        // create fileReader and accountList
         BufferedReader fileReader = null;
         List<AccountInterface> accountList = new ArrayList<AccountInterface>();
 

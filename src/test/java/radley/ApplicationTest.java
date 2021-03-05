@@ -84,7 +84,7 @@ class ApplicationTest {
             int accountNumber = application.createAccount("First", "Last", initialBalance, false);
             assertNotEquals(0, accountNumber);
 
-            assertEquals(ErrorCode.Success, application.withdrawFunds(withdrawalValue, accountNumber));
+            assertEquals(ErrorCode.Success, application.withdrawFunds(accountNumber, withdrawalValue));
             assertEquals(initialBalance + withdrawalValue, application.getBalance(accountNumber));
 
         } catch (Exception e) {

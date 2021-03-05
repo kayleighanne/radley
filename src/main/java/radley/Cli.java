@@ -13,8 +13,9 @@ import java.util.concurrent.Callable;
         ListAccounts.class,
         DepositFunds.class,
         WithdrawFunds.class,
-        getBalance.class
+        ReportAcount.class
 })
+// create new command line
 public class Cli implements Runnable {
     public static void main(String[] args) {
         new CommandLine(new Cli()).execute(args);
@@ -26,6 +27,7 @@ public class Cli implements Runnable {
     }
 }
 
+// create account command
 @Command(name = "create", description = "Create a new account.")
 class CreateAccount implements Callable<Integer> {
     @Option(names = "-f", required = true, description = "First name of account holder.")
@@ -40,7 +42,7 @@ class CreateAccount implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.printf("FirstName: %s, LastName: %s, Balance: %f, Limited: %s\n", firstname, surname, balance, limited);
+        System.out.printf("First Name: %s, Last Name: %s, Balance: %f, Limited: %s\n", firstname, surname, balance, limited);
         Application app = new Application();
         app.createAccount(firstname, surname, balance, limited);
         app.close();
@@ -48,13 +50,14 @@ class CreateAccount implements Callable<Integer> {
     }
 }
 
+// delete account command
 @Command(name="delete", description = "Delete Account")
 class DeleteAccount implements Callable<Integer> {
     @Option(names = "-a", required = true, description = "Number of account to be deleted.") int account;
 
     @Override
     public Integer call() throws Exception {
-        System.out.printf("Account: %d", account);
+        System.out.printf("Account: %d \n", account);
         Application app = new Application();
         app.deleteAccount(account);
         app.close();
@@ -62,18 +65,20 @@ class DeleteAccount implements Callable<Integer> {
     }
 }
 
+// list account command
 @Command(name="list", description = "List Accounts")
 class ListAccounts implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.printf("List");
+        System.out.printf("List: ");
         new Application().listAccounts();
         return null;
     }
 }
 
 
+// deposit funds command
 @Command(name="deposit", description = "Deposit Funds")
 class DepositFunds implements Callable<Integer> {
     @Option(names = "-v", required = true, description = "Value to be deposited.") float value;
@@ -81,7 +86,7 @@ class DepositFunds implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.printf("Funds deposited: %f", value);
+        System.out.printf("Funds deposited: %.2f", value);
         Application app = new Application();
         ErrorCode retval =  app.depositFunds(account, value);
         app.close();
@@ -89,6 +94,7 @@ class DepositFunds implements Callable<Integer> {
     }
 }
 
+// withdraw funds command
 @Command(name="withdraw", description = "Withdraw Funds")
 class WithdrawFunds implements Callable<Integer> {
     @Option(names = "-v", required = true, description = "Value to be withdrawn.") float value;
@@ -96,29 +102,30 @@ class WithdrawFunds implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.printf("Funds withdrawn: %f", value);
+
         Application app = new Application();
         ErrorCode retval = app.withdrawFunds(account, value);
+        if (retval == ErrorCode.Success) {
+            System.out.println("Funds withdrawn: " + Float.toString(value));
+        } else {
+            System.out.println("Error withdrawing funds\n");
+        }
         app.close();
         return null;
     }
 }
 
+// balance report command
 @Command(name="report", description = "Account Balance Report")
-class getBalance implements Callable<Integer> {
-    @Option(names ="-c", required = true, description = "Current balance.") float balance;
+class ReportAcount implements Callable<Integer> {
     @Option(names="-a", required = true, description = "Account Number.") int account;
-    @Option(names="-f", description = "First Name") String firstname;
-    @Option(names="-s", description = "Surname") String surname;
-    @Option(names="-o", description = "Overdraft") float overdraft;
 
     @Override
     public Integer call() throws Exception {
+        Application app = new Application();
+
         System.out.printf("Account Number: %d",account);
-        System.out.printf("\nName: %s", firstname + " " + surname);
-        System.out.printf("\nCurrent balance: %f", balance);
-        System.out.printf("\nOverdraft remaining: %f", overdraft);
-        new Application().getBalance(account);
+        System.out.printf("\nCurrent balance: %.2f Overdraft Limit: %.2f\n", app.getBalance(account), app.getOverdraft(account));
 
         return null;
     }
